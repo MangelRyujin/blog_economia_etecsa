@@ -20,9 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from general.views import landing_page
 from publication.views import publication_detail
+from django.contrib.auth.views import LogoutView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('admin/logout/', LogoutView.as_view(), name='logout'),
     path('',landing_page,name='landing-page'),
     path('publicacion/<int:pk>/',publication_detail,name='publication_detail-page')
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
