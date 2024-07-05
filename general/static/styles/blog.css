@@ -1,7 +1,7 @@
 /* stylelint-disable @stylistic/selector-list-comma-newline-after */
 .bg-body-secondary {
   --bs-bg-opacity: 1;
-  background: linear-gradient(310deg,#5746d9,#bdbde0) !important;
+  background: linear-gradient(240deg,#396cdbb5,#597adeca) !important;
 }
 
 .bd-placeholder-img {

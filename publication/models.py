@@ -35,7 +35,7 @@ class Publication(models.Model):
 class PublicationComment(models.Model):
     publication = models.ForeignKey(Publication,on_delete=models.CASCADE,verbose_name='Publicacion')
     email = models.EmailField('email')
-    comment = models.CharField('comentario' ,max_length=100)
+    comment = models.TextField('comentario' ,max_length=255)
     active = models.BooleanField('activo',default=True)
     likes = models.IntegerField('likes',default=0, validators=[MinValueValidator(0)])
     date_time_create= models.DateTimeField("Fecha de creacion",auto_now_add=True)
