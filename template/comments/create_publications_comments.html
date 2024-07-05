@@ -1,0 +1,39 @@
+{% load static %}
+{% if form %}
+<form
+              class="form-control"
+              novalidate=""
+            >
+              {% csrf_token %} 
+              {% for field in form %}
+              <div class="mb-3">
+                <label for="{{field.label}}" class="form-label col-12"
+                  >{{field.label}}</label
+                >
+                {{field}}
+              </div>
+              {% endfor %} 
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cerrar
+                </button>
+                <button
+                  type="submit"
+                  
+                  class="btn btn-primary"
+                  data-bs-dismiss="modal"
+                  hx-post="{% url 'create_publications_comments' pk=publication.id %}" 
+                  hx-target="#publicationDetailCreate" 
+                  hx-trigger="click"
+                >
+                  Send
+                </button>
+              </div>
+
+            </form>
+
+{% endif %}

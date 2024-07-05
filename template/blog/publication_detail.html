@@ -24,7 +24,12 @@
               aria-label="Close"
             ></button>
           </div>
-            <form
+          <div class="modal-body" hx-get="{% url 'create_publications_comments' pk=publication.id %}" hx-target="#publicationDetailCreate" hx-trigger="load" >
+            <div id="publicationDetailCreate">
+              
+            </div>
+          </div>
+            <!-- <form
                 class="form-control"
                 action="{% url 'publication_detail-page' pk=publication.id %}"
                 novalidate=""
@@ -58,7 +63,7 @@
                   </button>
                 </div>
                 {% endif %}
-              </form>
+              </form> -->
         </div>
       </div>
     </div>
@@ -92,36 +97,18 @@
         </h3>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-          {% if comments %}
-            {% for comment in comments %}
-            <div class="d-flex text-body-secondary pt-3">
-              <img
-              src="{% static './images/avatar.jpg' %}"
-              alt=""
-              width="32"
-              height="32"
-              class="rounded-circle me-2"
-            />
-            <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
-                  <div class="d-flex justify-content-between">
-                    <strong class="text-gray-dark">{{comment.email}}</strong>
-                    <a href="#" class="text-decoration-none"><span class="">{{comment.likes}}</span> <i class="fa fa-heart" aria-hidden="true" style="font-size: 20px;"></i></a>
-                  </div>
-                  <span class="d-block">{{comment.comment}}</span>
-                </div>
-              </div>
-            {% endfor %}
-          {% endif %}
           
+           <div  class="my-3 p-3 bg-body rounded shadow-sm" hx-get="{% url 'publications_comments' pk=publication.id comment_id=0 %}" hx-target="#publicationComments" hx-trigger="load" >
+            <div id="publicationComments">
+            </div>
+            <small class="d-block text-end mt-3">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#publicationStaticBackdrop">
+                Comentar
+              </button>
+              
+            </small>
+          </div>
           
-          
-          <!-- Button trigger modal -->
-          <small class="d-block text-end mt-3">
-            <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#publicationStaticBackdrop">
-              Comentar
-            </button>
-            
-          </small>
         </div>
   
       </div>

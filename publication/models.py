@@ -23,7 +23,7 @@ class Publication(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE,verbose_name='Categoria')
     small_description = models.CharField('Pequeña descripcion',max_length=100)
     description = models.TextField('Cuerpo de la publicacion')
-    active = models.BooleanField('Activar', default=True)
+    active = models.BooleanField('Activar', default=False)
 
     class Meta:
         verbose_name = "Publicacion"
@@ -36,9 +36,11 @@ class PublicationComment(models.Model):
     publication = models.ForeignKey(Publication,on_delete=models.CASCADE,verbose_name='Publicacion')
     email = models.EmailField('email')
     comment = models.TextField('comentario' ,max_length=255)
-    active = models.BooleanField('activo',default=True)
+    active = models.BooleanField('activo',default=False)
     likes = models.IntegerField('likes',default=0, validators=[MinValueValidator(0)])
     date_time_create= models.DateTimeField("Fecha de creacion",auto_now_add=True)
+    users= models.ManyToManyField(User,null=True,blank=True,related_name='users_publication')
+
 
     class Meta:
         verbose_name = 'Comentario sobre la publicacion'
@@ -46,3 +48,8 @@ class PublicationComment(models.Model):
         
     def __str__(self):
         return self.email
+    
+    def user_has_comment(self,user):
+        if self.users.filter(id=user).exists():
+            return True
+        return False

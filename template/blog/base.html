@@ -79,7 +79,7 @@
           <div class="col-6 col-md-4 text-start bot">
             <a
               class="blog-header-logo text-body-emphasis text-decoration-none"
-              href="#"
+              href="{% url 'landing-page' %}"
               >Xample</a
             >
           </div>
@@ -121,64 +121,7 @@
       </header>
     </div>
 
-    <div
-      class="modal fade"
-      id="staticBackdrop"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Comentar</h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form
-              class="form-control"
-              action="{% url 'landing-page' %}"
-              novalidate=""
-              method="POST"
-            >
-              {% csrf_token %} {% if form %} {% for field in form %}
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label col-12"
-                  >{{field.label}}</label
-                >
-                {{field}}
-              </div>
-              {% endfor %} 
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Cerrar
-                </button>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  data-bs-dismiss="modal"
-                  id="liveToastBtn"
-                >
-                  Send
-                </button>
-              </div>
-              {% endif %}
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    
 
     
   </head>
@@ -251,8 +194,8 @@
     </ul>
   </div>
   <div
-    class="dropdown position-fixed end-0 mb-3 me-3 bd-mode-toggle"
-    style="bottom: 8%"
+    class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle"
+    style="transform: translateY(-50px)"
   >
     <button class="btn btn-primary py-2 d-flex align-items-center">
       <p class="mb-0">
@@ -307,6 +250,8 @@
     </footer>
 
     <script src="{% static './assets/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static './js/htmx.min.js' %}"></script>
+    <!-- <script src="https://unpkg.com/htmx.org@1.6.1"></script> -->
     <script>
       const toastTrigger = document.getElementById("liveToastBtn");
       const toastLiveExample = document.getElementById("liveToast");

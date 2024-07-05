@@ -4,7 +4,36 @@
 {% block title %}Blog | Principal{% endblock %}
 
 {% block content %}
-    
+
+
+<div
+      class="modal fade"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Comentar</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" hx-get="{% url 'create_blog_comments' %}" hx-target="#blogCommentsCreate" hx-trigger="load" >
+            <div id="blogCommentsCreate">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 <main class="container">
      <div class="row p-4 p-md-5 mb-4  text-body-emphasis ">
       <div class="col-lg-6 px-0">
@@ -16,9 +45,17 @@
       </div>
        </div>
    <div class="row mb-3">
-      <div class="col-md-8 col-lg-8 nav-scroller py-1 mb-3 border-bottom">
+      <div class="col-12 nav-scroller py-1 mb-3 border-bottom">
         <nav class="nav nav-underline justify-content-between">
           <a class="nav-item nav-link link-body-emphasis active" href="#">Todos</a>
+          <a class="nav-item nav-link link-body-emphasis" href="#">Contabilidad</a>
+          <a class="nav-item nav-link link-body-emphasis" href="#">Finanzas</a>
+          <a class="nav-item nav-link link-body-emphasis" href="#">Economia</a>
+          <a class="nav-item nav-link link-body-emphasis" href="#">Eventos</a>
+          <a class="nav-item nav-link link-body-emphasis" href="#">Contabilidad</a>
+          <a class="nav-item nav-link link-body-emphasis" href="#">Finanzas</a>
+          <a class="nav-item nav-link link-body-emphasis" href="#">Economia</a>
+          <a class="nav-item nav-link link-body-emphasis" href="#">Eventos</a>
           <a class="nav-item nav-link link-body-emphasis" href="#">Contabilidad</a>
           <a class="nav-item nav-link link-body-emphasis" href="#">Finanzas</a>
           <a class="nav-item nav-link link-body-emphasis" href="#">Economia</a>
@@ -26,9 +63,12 @@
         </nav>
         
       </div>
-      <form class="col-md-4 col-lg-4 " role="search">
-        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-      </form>
+      <div class="row justify-content-end p-0 m-0">
+        <form class="col-md-4 " role="search">
+          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        </form>
+      </div>
+      
       
     </div>
     
@@ -84,14 +124,14 @@
           
           <div id="carouselExampleFade" class="carousel slide carousel-fade">
             <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="{% static './images/Capture2.PNG' %}" class="d-block w-100" alt="...">
+              <div class="carousel-item active  w-100">
+                <img src="{% static './images/eco-1.jpeg' %}" class="d-block img-fluid w-100" alt="..." style="max-height: 400px; min-height: 400px;">
               </div>
-              <div class="carousel-item">
-                <img src="{% static './images/Capture.PNG' %}" class="d-block w-100" alt="...">
+              <div class="carousel-item w-100">
+                <img src="{% static './images/eco-2.jpeg' %}" class="d-block img-fluid w-100" alt="..." style="max-height: 400px; min-height: 400px;">
               </div>
-              <div class="carousel-item">
-                <img src="{% static './images/Capture2.PNG' %}" class="d-block w-100" alt="...">
+              <div class="carousel-item w-100">
+                <img src="{% static './images/eco-3.jpeg' %}" class="d-block img-fluid w-100" alt="..." style="max-height: 400px;  min-height: 400px;">
               </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
@@ -108,32 +148,9 @@
           Opiniones sobre el blog
         </h3>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
-          {% comment %} <h6 class="border-bottom pb-2 mb-0">Reseñas</h6> {% endcomment %}
-          {% if comments %}
-            {% for comment in comments %}
-            <div class="d-flex text-body-secondary pt-3">
-                <img
-                  src="{% static './images/avatar.jpg' %}"
-                  alt=""
-                  width="32"
-                  height="32"
-                  class="rounded-circle me-2"
-                />
-                <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
-                  <div class="d-flex justify-content-between">
-                    <strong class="text-gray-dark">{{comment.email}}</strong>
-                    <a href="#" class="text-decoration-none"><span class="">{{comment.likes}}</span> <i class="fa fa-heart" aria-hidden="true" style="font-size: 20px;"></i></a>
-                  </div>
-                  <span class="d-block">{{comment.comment}}</span>
-                </div>
-              </div>
-            {% endfor %}
-          {% endif %}
-          
-          
-          
-         
+        <div  class="my-3 p-3 bg-body rounded shadow-sm" hx-get="{% url 'blog_comments' pk='0'%}" hx-target="#blogComments" hx-trigger="load" >
+          <div id="blogComments">
+          </div>
           <small class="d-block text-end mt-3">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               Comentar
@@ -145,12 +162,12 @@
          Galeria
         </h3>
         
-        <div class="container overflow-hidden text-center">
+        <div class=" text-center mb-4">
           <div class="row gy-5">
             {% if gallery %}
             {% for image in gallery %}
             <div class="col-lg-6 col-md-6">
-              <div class="p-3 "><img src="{{ image.image.url }}" class="img-fluid" alt="./img.jpg"></div>
+              <div class=""><img src="{{ image.image.url }}" class="img-fluid" alt="./img.jpg"></div>
             </div>
             {% endfor %}
             {% endif %}

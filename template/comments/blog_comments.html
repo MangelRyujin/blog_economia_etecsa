@@ -1,0 +1,42 @@
+{% load static %}
+{% if comments %}
+{% for comment in comments %}
+<div class="d-flex text-body-secondary pt-3">
+    <img
+      src="{% static './images/avatar.jpg' %}"
+      alt=""
+      width="32"
+      height="32"
+      class="rounded-circle me-2"
+    />
+    <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+      <div class="d-flex justify-content-between">
+        <strong class="col-10 text-gray-dark">{{comment.comment.email}}</strong>
+        {% if user.is_authenticated %}
+            {% if comment.like %}
+                <form>
+                    {% csrf_token %}
+                    <div  class=" text-decoration-none" hx-post="{% url 'blog_comments' pk=comment.comment.id %}" hx-target="#blogComments" hx-trigger="click"
+                    style="cursor: pointer;" >
+                        <span class="">{{comment.comment.likes}}</span> <i class="fa fa-heart text-primary-emphasis " aria-hidden="true" style="font-size: 20px;"></i>
+                    </div>
+                </form>
+            {% else %}
+                <form>
+                    {% csrf_token %}
+                    <div style="cursor: pointer;" class=" text-decoration-none" hx-post="{% url 'blog_comments' pk=comment.comment.id %}" hx-target="#blogComments" hx-trigger="click" >
+                        <span class="">{{comment.comment.likes}}</span> <i class="fa fa-heart " aria-hidden="true" style="font-size: 20px;"></i>
+                    </div>
+                </form>
+            {% endif %}
+        {% else %}
+            <span href="" class="text-decoration-none" hx-post="{% url 'blog_comments' pk=comment.comment.id %}" hx-target="#blogComments" hx-trigger="click" >
+                <span class="">{{comment.comment.likes}}</span> <i class="fa fa-heart" aria-hidden="true" style="font-size: 20px;"></i>
+            </span>
+        {% endif %}
+        </div>
+      <span class="d-block">{{comment.comment.comment}}</span>
+    </div>
+  </div>
+{% endfor %}
+{% endif %}

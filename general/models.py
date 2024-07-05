@@ -1,6 +1,7 @@
 from django.db import models
 from solo.models import SingletonModel # type: ignore
 from django.utils.translation import gettext as _
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 # Create your models here.
 
@@ -42,12 +43,12 @@ class Gallery(models.Model):
         return self.name
 
 class BlogComment(models.Model):
-
     email = models.EmailField('email')
-    comment = models.CharField('comentario' ,max_length=100)
-    active = models.BooleanField('activo',default=True)
+    comment = models.TextField('comentario' ,max_length=250)
+    active = models.BooleanField('activo',default=False)
     likes = models.IntegerField('likes',default=0, validators=[MinValueValidator(0)])
     date_time_create= models.DateTimeField("Fecha de creacion",auto_now_add=True)
+    users= models.ManyToManyField(User,null=True,blank=True,related_name='users')
 
     class Meta:
         verbose_name = 'Comentario sobre el Blog'
@@ -56,3 +57,7 @@ class BlogComment(models.Model):
     def __str__(self):
         return self.email
 
+    def user_has_comment(self,user):
+        if self.users.filter(id=user).exists():
+            return True
+        return False
