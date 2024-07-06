@@ -48,7 +48,7 @@ class BlogComment(models.Model):
     active = models.BooleanField('activo',default=False)
     likes = models.IntegerField('likes',default=0, validators=[MinValueValidator(0)])
     date_time_create= models.DateTimeField("Fecha de creacion",auto_now_add=True)
-    users= models.ManyToManyField(User,null=True,blank=True,related_name='users')
+    users= models.ManyToManyField(User,blank=True,related_name='users')
 
     class Meta:
         verbose_name = 'Comentario sobre el Blog'

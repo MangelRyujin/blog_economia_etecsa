@@ -1,21 +1,34 @@
 from django.shortcuts import render
-
-from publication.models import Publication, PublicationComment
+from django.core.paginator import Paginator
+from general.articles_filter import PublicationFilter
+from publication.models import Category, Publication
 from .forms import BlogCommentForm
 from general.models import BlogComment, Gallery
 
 # Create your views here.
 def landing_page(request):
-    # comments = BlogComment.objects.filter(active=True)
-    articles = Publication.objects.filter(active=True)
+    categories = Category.objects.filter(active=True)
+    get_copy = request.GET.copy()
+    print(get_copy)
+    parameters = get_copy.pop('page', True) and get_copy.urlencode()
+    articles = PublicationFilter(request.GET, queryset=Publication.objects.filter(active=True))
+    paginator = Paginator(articles.qs, 3)    # Show 25 contacts per page.
+    page_number = request.GET.get("page",1)
+    page_obj = paginator.get_page(page_number)
     resent_articles = Publication.objects.filter(active=True).order_by('-id')[:3]
     gallery = Gallery.objects.all()
     form = BlogCommentForm()
+    start_index = (int(page_number) - 1) * 10 + 1
+    end_index = start_index + len(page_obj) - 1
     context = {
+        'categories':categories,
         'gallery':gallery,
-        'articles':articles,
         'form':form,
-        'resent_articles':resent_articles
+        'resent_articles':resent_articles,
+        'pagination':page_obj,
+        'parameters': parameters,
+        'start_index':start_index,
+        'end_index': end_index,
     }
     if request.method == "POST":
         form = BlogCommentForm(request.POST)

@@ -45,27 +45,42 @@
       </div>
        </div>
    <div class="row mb-3">
-      <div class="col-12 nav-scroller py-1 mb-3 border-bottom">
-        <nav class="nav nav-underline justify-content-between">
-          <a class="nav-item nav-link link-body-emphasis active" href="#">Todos</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Contabilidad</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Finanzas</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Economia</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Eventos</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Contabilidad</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Finanzas</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Economia</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Eventos</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Contabilidad</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Finanzas</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Economia</a>
-          <a class="nav-item nav-link link-body-emphasis" href="#">Eventos</a>
-        </nav>
-        
-      </div>
+    {% if categories %}
+    <div class="nav-scroller col-12  mb-3 border-bottom">
+      <nav class="nav nav-underline justify-content-between">
+        <form method="GET" id="category-filters">
+          <button type="submit" class="nav-item nav-link link-body-emphasis {% if  request.GET.category  %}{% else %}active{% endif %} ">
+            <select class="d-none form-control search-filter select2-hidden-accessible" name="category">
+              <option class="d-none" value=""></option>
+            </select>
+            Todos
+        </button>
+          
+        </form>
+        {% for category  in  categories %}
+          <form method="GET" id="category-filters-{{category.id}}">
+            
+           
+            <button type="submit" class="nav-item nav-link link-body-emphasis {% if  request.GET.category == category.id|stringformat:'i'  %}active{% endif %}">
+              <select class="d-none form-control search-filter select2-hidden-accessible" name="category">
+                <option class="d-none" value="{{category.id}}"> </option>
+              </select>
+              {{category.name}}
+          </button>
+            
+          </form>
+        {% endfor %}
+      </nav>
+    </div>
+    {% endif %}
+      
       <div class="row justify-content-end p-0 m-0">
-        <form class="col-md-4 " role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        <form class="col-md-5 "method="GET" role="search">
+          <div class="w-100 d-flex p-0 m-0">
+            <input type="search" class="form-control w-75" name='title' placeholder="Search..." aria-label="Search">
+            <button type="submit" class="btn btn-primary w-25">
+              Search</button>
+            </div>
         </form>
       </div>
       
@@ -74,8 +89,11 @@
     
   
     <div class="row mb-2">
-      {% if articles %}
-      {% for article in articles %}
+      {% if pagination %}
+      <div class="py-3">
+         Artículos mostrados {{pagination.object_list|length  }} de {{ pagination.paginator.count }}
+      </div>
+      {% for article in pagination %}
         <div class="col-md-6">
           <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
@@ -95,19 +113,35 @@
           </div>
         </div>
       {% endfor %}
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end">
-          <li class="page-item disabled">
-            <a class="page-link">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
+        {% if pagination.has_next or pagination.has_previous%}
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+              {% if pagination.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?{{ parameters }}&page={{ pagination.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" >Previous</a>
+                </li>
+              {% endif %}
+              {% for page_number in pagination.paginator.page_range %}
+                <li class="page-item {% if page_number == pagination.number %}active{% endif %}">
+                  <a href="?page={{ page_number }}&{{ parameters }}" class="page-link">{{ page_number }}</a>
+                </li>
+              {% endfor %}
+              {% if pagination.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?{{ parameters }}&page={{ pagination.next_page_number }}">Next</a>
+                </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" >Next</a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        {% endif %}
       {% endif %}
       
       
