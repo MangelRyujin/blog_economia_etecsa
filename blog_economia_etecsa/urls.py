@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from general.views import blog_comments, create_blog_comments, landing_page
+from general.views import blog_comments, create_blog_comments, landing_page,publications_results
 from publication.views import create_publications_comments, publication_detail, publications_comments
 from django.contrib.auth.views import LogoutView
 
@@ -27,6 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('admin/logout/', LogoutView.as_view(), name='logout'),
     path('',landing_page,name='landing-page'),
+    path('publications_results/',publications_results,name='publications_results'),
+    
     path('blog_comments/<int:pk>/',blog_comments,name='blog_comments'),
     path('blog_comments/create/',create_blog_comments,name='create_blog_comments'),
     

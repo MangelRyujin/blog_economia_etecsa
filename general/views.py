@@ -7,19 +7,10 @@ from general.models import BlogComment, Gallery
 
 # Create your views here.
 def landing_page(request):
-    categories = Category.objects.filter(active=True)
-    get_copy = request.GET.copy()
-    print(get_copy)
-    parameters = get_copy.pop('page', True) and get_copy.urlencode()
-    articles = PublicationFilter(request.GET, queryset=Publication.objects.filter(active=True))
-    paginator = Paginator(articles.qs, 3)    # Show 25 contacts per page.
-    page_number = request.GET.get("page",1)
-    page_obj = paginator.get_page(page_number)
+    categories,page_obj,parameters=_show_categories_and_products(request)
     resent_articles = Publication.objects.filter(active=True).order_by('-id')[:3]
     gallery = Gallery.objects.all()
     form = BlogCommentForm()
-    start_index = (int(page_number) - 1) * 10 + 1
-    end_index = start_index + len(page_obj) - 1
     context = {
         'categories':categories,
         'gallery':gallery,
@@ -27,8 +18,8 @@ def landing_page(request):
         'resent_articles':resent_articles,
         'pagination':page_obj,
         'parameters': parameters,
-        'start_index':start_index,
-        'end_index': end_index,
+        
+        
     }
     if request.method == "POST":
         form = BlogCommentForm(request.POST)
@@ -36,6 +27,37 @@ def landing_page(request):
             comment = form.save()
             return render(request,'blog/index.html',context)
     return render(request,'blog/index.html',context)
+
+# Create your views here.
+def publications_results(request):
+    categories,page_obj,parameters=_show_categories_and_products(request)
+    context = {
+        'categories':categories,
+        'pagination':page_obj,
+        'parameters': parameters,
+    }
+    return render(request,'blog/publications_results.html',context)
+
+
+
+
+
+
+
+def _show_categories_and_products(request):
+    categories = Category.objects.filter(active=True)
+    get_copy = request.GET.copy()
+    parameters = get_copy.pop('page', True) and get_copy.urlencode()
+    articles = PublicationFilter(request.GET, queryset=Publication.objects.filter(active=True))
+    paginator = Paginator(articles.qs, 4)    # Show 25 contacts per page.
+    page_number = request.GET.get("page",1)
+    page_obj = paginator.get_page(page_number)
+    return categories,page_obj,parameters
+
+
+
+
+
 
 
 def create_blog_comments(request):

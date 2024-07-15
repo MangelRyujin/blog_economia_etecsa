@@ -61,3 +61,16 @@ class BlogComment(models.Model):
         if self.users.filter(id=user).exists():
             return True
         return False
+    
+class Event(models.Model):
+    name = models.CharField('Nombre',max_length=100)
+    image = models.ImageField('Imagen',upload_to='events')
+    active = models.BooleanField('activo',default=False)
+    
+
+    class Meta:
+        verbose_name = 'Evento'
+        verbose_name_plural = 'Eventos'
+
+    def __str__(self):
+        return self.name
