@@ -21,7 +21,7 @@ class Publication(models.Model):
     image = models.ImageField('Imagen',upload_to='publication')
     author = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='Autor')
     category = models.ForeignKey(Category,on_delete=models.CASCADE,verbose_name='Categoria')
-    small_description = models.CharField('Pequeña descripcion',max_length=100)
+    small_description = models.TextField('Pequeña descripcion',max_length=100)
     description = models.TextField('Cuerpo de la publicacion')
     active = models.BooleanField('Activar', default=False)
 
