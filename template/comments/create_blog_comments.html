@@ -1,7 +1,7 @@
 {% load static %}
 {% if form %}
-
-<form
+<div class="container">
+  <form
               class="form-control"
               novalidate=""
             >
@@ -11,7 +11,10 @@
                 <label for="exampleFormControlTextarea1" class="form-label col-12"
                   >{{field.label}}</label
                 >
-                {{field}}
+                
+                  {{field}}
+                
+                
               </div>
               {% endfor %} 
               <div class="modal-footer">
@@ -37,5 +40,7 @@
               </div>
 
             </form>
+</div>
+
 
 {% endif %}
