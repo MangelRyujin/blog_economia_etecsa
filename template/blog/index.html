@@ -37,8 +37,7 @@ Principal{% endblock %} {% block content %}
     <div class="col-lg-6 px-0">
       <h1 class="display-4 fst-italic">Descripcion del blog</h1>
       <p class="lead my-3">
-        Multiple lines of text that form the lede, informing new readers quickly
-        and efficiently about what’s most interesting in this post’s contents.
+        Este blog es una plataforma digital donde los autores comparten sus opiniones, experiencias y conocimientos sobre diversos temas, buscando conectar con un público específico. Ideal para expresarse, aprender y mantenerse actualizado en diferentes áreas de interés.
       </p>
     </div>
     <div class="col-lg-6 px-0">
@@ -283,7 +282,7 @@ Principal{% endblock %} {% block content %}
 
    <div class="row">
     <div class="col-md-8">
-      <h3 class="pb-4 mb-4 fst-italic border-bottom">From the Firehose</h3>
+      <h3 class="pb-4 mb-4 fst-italic border-bottom">Síganos para mas información</h3>
       <article class="blog-post">
         <h2 class="display-5 link-body-emphasis mb-1">Futuros eventos</h2>
 
@@ -359,15 +358,16 @@ Principal{% endblock %} {% block content %}
       <h3 class="pb-4 mb-4 fst-italic border-bottom">Galeria</h3>
 
       <div class="text-center mb-4">
+        
         <div class="row gy-5">
           {% if gallery %} {% for image in gallery %}
+          
           <div class="col-lg-6 col-md-6">
-            <div class="">
-              <img
-                src="{{ image.image.url }}"
-                class="img-fluid"
-                alt="./img.jpg"
-              />
+            <div class=" w-100 h-100 rounded-2" style="background-position: center center;background-size: cover; background-image: url('{{ image.image.url }}');">
+              <div class="w-100 h-100 d-flex flex-column p-3 justify-content-between " style="min-height: 300px;">
+                 
+              </div>
+              
             </div>
           </div>
           {% endfor %} {% endif %}
@@ -379,20 +379,20 @@ Principal{% endblock %} {% block content %}
       <div class="position-sticky" style="top: 2rem">
         <h4 class="fst-italic">Publicaciones recientes</h4>
         <ul class="list-unstyled">
+          
           {% if resent_articles %} {% for resent_article in resent_articles %}
-          <li>
+          <li >
             <a
-              class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
+              class="d-flex  flex-column  gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
               href="{% url 'publication_detail-page' pk=resent_article.id  %}"
             >
-              <div class="col-md-4">
-                <img
-                  class="img-fluid"
-                  src="{{resent_article.image.url}}"
-                  alt=""
-                />
+              <div class="col-12  h-100 rounded-2" style="background-position: center center;background-size: cover; background-image: url('{{resent_article.image.url}}');">
+                <div class="w-100 h-100 d-flex flex-column p-3 justify-content-between " style="min-height: 250px;">
+                 
+                </div>
+                
               </div>
-              <div class="col-md-8">
+              <div class="col-12 ">
                 <h5 class="mb-0 ">{{resent_article.title}}</h5>
                 <h6 class="mb-0 text-primary-emphasis">{{resent_article.category.name}}</h6>
                 <small class="text-body-secondary"
